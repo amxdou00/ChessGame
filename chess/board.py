@@ -93,6 +93,8 @@ class Board:
         self.draw_pieces()
         # Updating the moves for each piece
         for piece in self.remaining_pieces:
+            if piece.name == "pawn":
+                piece.en_passant_possible = False
             piece.generate_moves(game)
 
     def piece_at_case(self, row, col):
@@ -109,3 +111,14 @@ class Board:
         self.draw_pieces()
         # Updating the pieces
         self.update_pieces(game)
+
+    def is_square_safe_for(self, color, row, col):
+        safe = True
+        for piece in self.remaining_pieces:
+            if piece.color != color:
+                for move in piece.moves:
+                    if move == (row, col):
+                        safe = False
+                        break
+        return safe
+    
